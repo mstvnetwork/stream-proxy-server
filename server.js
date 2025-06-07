@@ -15,7 +15,7 @@ app.use(cors());
 // URLs with existing tokens or complex ad parameters might fail if the base URL itself is blocked.
 const channelMap = {
     "bbo": {
-        baseURL: "https://livegeoroueu.akamaized.net/28072023/smil:bbo1.smil/playlist.m3u8",
+        baseURL: "https://livegeoroueu.akamaized.net/28072023/smil:bbo1.smil/playlist.m3u8?hdnts=st=1749305751~exp=1749309351~acl=!*/28072023/smil:bbo1.smil/*!yuppTVCom_5_24049354_c24505a291c14922_US_65.181.111.29~data=yuppTVCom_5_24049354_c24505a291c14922_US_65.181.111.29~hmac=fd9b85f355477e151524dbbe948ca1f26ae3a7b5319ed2ec101739f771975b63&ads.app_bundle=&ads.app_store_url=&ads.content_livestream=1&ads.language=HIN&ads.content_genre=MOV&ads.channel=3529&ads.channel_name=BBO&ads.network_name=yupptv&ads.user=1",
         name: "BBO Stream (Akamai - *might be blocked*)"
     },
     "mstv-desi-play": {
