@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HLS.js Stream Player</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background-color: #f0f0f0; margin: 0; padding: 20px; box-sizing: border-box; }
+        .player-container { max-width: 900px; width: 100%; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        video { width: 100%; height: auto; display: block; margin-bottom: 15px; background-color: #000; }
+        select, button { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; box-sizing: border-box; }
+        button { background-color: #007bff; color: white; cursor: pointer; border: none; }
+        button:hover { background-color: #0056b3; }
+        p { margin-top: 15px; font-size: 0.9em; color: #555; text-align: center; }
+        #log {
+            background-color: #e9e9e9;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-top: 10px;
+            min-height: 50px;
+            max-height: 150px;
+            overflow-y: auto;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <div class="player-container">
+        <h1>HLS.js Stream Player</h1>
+        <video id="video" controls autoplay></video>
+        
+        <select id="channelSelect">
+            <option value="">Select a Channel</option>
+            <option value="http://127.0.0.1:3000/stream/bbo">BBO Stream (Akamai - *might be blocked*)</option>
+            <option value="http://127.0.0.1:3000/stream/mstv-desi-play">MSTV DESI PLAY</option>
+            <option value="http://127.0.0.1:3000/stream/b4u-kadak">B4U KADAK</option>
+            <option value="http://127.0.0.1:3000/stream/nazara-tv">NAZARA TV</option>
+            <option value="http://127.0.0.1:3000/stream/ishara-tv">ISHARA TV</option>
+            <option value="http://127.0.0.1:3000/stream/aaj-tak-hd-1">AAJ TAK HD</option>
+            <option value="http://127.0.0.1:3000/stream/news-nation">NEWS NATION</option>
+            <option value="http://127.0.0.1:3000/stream/joo-music">JOO MUSIC</option>
+            <option value="http://127.0.0.1:3000/stream/arre-tv">ARRE TV</option>
+            <option value="http://127.0.0.1:3000/stream/q-kahaniyaa-hd">Q KAHANIYAA HD</option>
+            <option value="http://127.0.0.1:3000/stream/yrf-music-1">YRF MUSIC</option>
+            <option value="http://127.0.0.1:3000/stream/bollywood-classic-hd-1">BOLLYWOOD CLASSIC HD</option>
+            <option value="http://127.0.0.1:3000/stream/abzy-movies">ABZY MOVIES</option>
+            <option value="http://127.0.0.1:3000/stream/dd-bharti">DD BHARTI</option>
+            <option value="http://127.0.0.1:3000/stream/gubbare-tv">GUBBARE TV</option>
+            <option value="http://127.0.0.1:3000/stream/entertainment-24">ENTERTAINMENT 24</option>
+            <option value="http://127.0.0.1:3000/stream/zee-zoom-tv-1">ZEE ZOOM TV</option>
+            <option value="http://127.0.0.1:3000/stream/dd-india">DD INDIA</option>
+            <option value="http://127.0.0.1:3000/stream/dangal-entertainment-tv-1">DANGAL ENTERTAINMENT TV</option>
+            <option value="http://127.0.0.1:3000/stream/dangal-entertainment-2-1">DANGAL ENTERTAINMENT 2</option>
+            <option value="http://127.0.0.1:3000/stream/epic-tv">EPIC TV</option>
+            <option value="http://127.0.0.1:3000/stream/chumbak-tv">CHUMBAK TV</option>
+            <option value="http://127.0.0.1:3000/stream/movie-plus">MOVIE PLUS</option>
+            <option value="http://127.0.0.1:3000/stream/bollywood-masala-1">BOLLYWOOD MASALA</option>
+            <option value="http://127.0.0.1:3000/stream/9x-jalwa">9X JALWA</option>
+            <option value="http://127.0.0.1:3000/stream/9x-music">9X MUSIC</option>
+            <option value="http://127.0.0.1:3000/stream/shemaroo-filmigaane">SHEMAROO FILMI GAANE</option>
+            <option value="http://127.0.0.1:3000/stream/shemaroo-umang">SHEMAROO UMANG</option>
+            <option value="http://127.0.0.1:3000/stream/music-mastii-1">MUSIC MASTII</option>
+            <option value="http://127.0.0.1:3000/stream/sony-kal">SONY KAL</option>
+            <option value="http://127.0.0.1:3000/stream/bbo-hd">BBO HD</option>
+            <option value="http://127.0.0.1:3000/stream/shemaroo-bollywood">SHEMAROO BOLLYWOOD</option>
+            <option value="http://127.0.0.1:3000/stream/bollywood-hd-1">BOLLYWOOD HD</option>
+            <option value="http://127.0.0.1:3000/stream/bollywood-4u">BOLLYWOOD 4 U</option>
+            <option value="http://127.0.0.1:3000/stream/sai-leela-tv">SAI LEELA TV</option>
+            <option value="http://127.0.0.1:3000/stream/chana-jor">CHANA JOR</option>
+            <option value="http://127.0.0.1:3000/stream/dhamaka-movies">DHAMAKA MOVIES</option>
+            <option value="http://127.0.0.1:3000/stream/manoranjan-grand">MANORANJAN GRAND</option>
+            <option value="http://127.0.0.1:3000/stream/comedy-tadka">COMEDY TADKA</option>
+            <option value="http://127.0.0.1:3000/stream/b4u-music">B4U MUSIC</option>
+            <option value="http://127.0.0.1:3000/stream/b4u-movies">B4U MOVIES</option>
+            <option value="http://127.0.0.1:3000/stream/xumo-bollywood-1">XUMO BOLLYWOOD</option>
+            <option value="http://127.0.0.1:3000/stream/zee-bollyworld-1">ZEE BOLLYWORLD</option>
+            <option value="http://127.0.0.1:3000/stream/d2p372oxiwmcn1">D2P372OXIWMC N1 Stream</option>
+            <option value="http://127.0.0.1:3000/stream/india-news-hd">INDIA NEWS HD</option>
+            <option value="http://127.0.0.1:3000/stream/india-speed-news">INDIA SPEED NEWS</option>
+            <option value="http://127.0.0.1:3000/stream/lok-sabha-tv">LOK SABHA TV</option>
+            <option value="http://127.0.0.1:3000/stream/aap-ke-adalat">AAP KE AADALAT</option>
+            <option value="http://127.0.0.1:3000/stream/abp-news">ABP NEWS</option>
+            <option value="http://127.0.0.1:3000/stream/delhi-ncr-haryana">DELHI NCR HARYANA</option>
+            <option value="http://127.0.0.1:3000/stream/ghaint-punjabi">GHAINT PUNJABI</option>
+            <option value="http://127.0.0.1:3000/stream/tabbar-hits">TABBAR HITS</option>
+            <option value="http://127.0.0.1:3000/stream/republic-bharat">REPUBLIC BHARAT</option>
+            <option value="http://127.0.0.1:3000/stream/green-gold-tv">GREEN GOLD TV</option>
+            <option value="http://127.0.0.1:3000/stream/sikh-ratnavali">SIKH RATNAVALI</option>
+            <option value="http://127.0.0.1:3000/stream/bollywood-masala-2">BOLLYWOOD MASALA</option>
+            <option value="http://127.0.0.1:3000/stream/saga-music-hd">SAGA MUSIC HD</option>
+            <option value="http://127.0.0.1:3000/stream/b4u-movies-2">B4U MOVIES</option>
+            <option value="http://127.0.0.1:3000/stream/mh-one">MH ONE</option>
+            <option value="http://127.0.0.1:3000/stream/green-chillies">GREEN CHILLIES</option>
+            <option value="http://127.0.0.1:3000/stream/saga-haryanvi">SAGA HARYANVI</option>
+            <option value="http://127.0.0.1:3000/stream/bollywood-hd-2">BOLLYWOOD HD</option>
+            <option value="http://127.0.0.1:3000/stream/cartoon-network">CARTOON NETWORK</option>
+            <option value="http://127.0.0.1:3000/stream/hamara-tv-pak">HAMARA TV (PAK)</option>
+            <option value="http://127.0.0.1:3000/stream/brit-asia-tv">BRIT ASIA TV</option>
+            <option value="http://127.0.0.1:3000/stream/india-life-tv">INDIA LIFE TV</option>
+            <option value="http://127.0.0.1:3000/stream/channel-seven-aus">CHANNEL SEVEN (AUS)</option>
+            <option value="http://127.0.0.1:3000/stream/zee-news">ZEE NEWS</option>
+            <option value="http://127.0.0.1:3000/stream/dd-national">DD NATIONAL</option>
+            <option value="http://127.0.0.1:3000/stream/zee-salaam">ZEE SALAAM</option>
+            <option value="http://127.0.0.1:3000/stream/horror-tv">HORROR TV</option>
+            <option value="http://127.0.0.1:3000/stream/apna-punjab-tv">APNA PUNJAB TV</option>
+            <option value="http://127.0.0.1:3000/stream/hamdard-tv">HAMDARD TV</option>
+            <option value="http://127.0.0.1:3000/stream/ishwar-tv">ISHWAR TV</option>
+            <option value="http://127.0.0.1:3000/stream/mh-one-shardha">MH ONE SHARDHA</option>
+            <option value="http://127.0.0.1:3000/stream/mastii-music-2">MASTII MUSIC</option>
+            <option value="http://127.0.0.1:3000/stream/goldmines-bollywood">GOLDMINES BOLLYWOOD</option>
+            <option value="http://127.0.0.1:3000/stream/goldmines-movies">GOLDMINES MOVIES</option>
+            <option value="http://127.0.0.1:3000/stream/hindi-news">HINDI NEWS</option>
+            <option value="http://127.0.0.1:3000/stream/hallmark-murder-mysteries">HALLMARK MURDER & MYSTERIES</option>
+            <option value="http://127.0.0.1:3000/stream/heartland-tv-usa">HEARTLAND TV USA</option>
+            <option value="http://127.0.0.1:3000/stream/bollywood-classic-hd-2">BOLLYWOOD CLASSIC HD</option>
+            <option value="http://127.0.0.1:3000/stream/dangal-2-2">DANGAL 2</option>
+            <option value="http://127.0.0.1:3000/stream/news18-pun-har-him">NEWS18 PUN/HAR/HIM</option>
+            <option value="http://127.0.0.1:3000/stream/india-tv">INDIA TV</option>
+            <option value="http://127.0.0.1:3000/stream/yrf-music-2">YRF MUSIC</option>
+            <option value="http://127.0.0.1:3000/stream/goldmine">GOLDMINE</option>
+            <option value="http://127.0.0.1:3000/stream/abc-me-australia">ABC ME (AUSTRALIA)</option>
+            <option value="http://127.0.0.1:3000/stream/amc-thrillers-eng">AMC THRILLERS (ENG)</option>
+            <option value="http://127.0.0.1:3000/stream/dangal-tv">DANGAL TV</option>
+            <option value="http://127.0.0.1:3000/stream/dangal-2-3">DANGAL 2</option>
+            <option value="http://127.0.0.1:3000/stream/zee-tv-usa">ZEE TV USA $$$</option> 
+            <option value="http://127.0.0.1:3000/stream/mastii-music-3">MASTII MUSIC</option>
+            <option value="http://127.0.0.1:3000/stream/punjabi-hits">PUNJABI HITS</option>
+            <option value="http://127.0.0.1:3000/stream/zee-zoom-2">ZEE ZOOM</option>
+            <option value="http://127.0.0.1:3000/stream/zee-bollyworld-2">ZEE BOLLYWORLD</option>
+            <option value="http://127.0.0.1:3000/stream/utsav-bharat">UTSAV BHARAT</option>
+            <option value="http://127.0.0.1:3000/stream/xumo-bollywood-2">XUMO BOLLYWOOD</option>
+            <option value="http://127.0.0.1:3000/stream/comedy-king-movies">COMEDY KING MOVIES</option>
+            <option value="http://127.0.0.1:3000/stream/rdc-movies">RDC MOVIES</option>
+            <option value="http://127.0.0.1:3000/stream/e-24">E 24</option>
+            <option value="http://127.0.0.1:3000/stream/balle-balle-music">BALLE BALLE MUSIC</option>
+            <option value="http://127.0.0.1:3000/stream/9xm-music-2">9XM MUSIC</option>
+            <option value="http://127.0.0.1:3000/stream/9x-jalwaa-2">9X JALWAA</option>
+            <option value="http://127.0.0.1:3000/stream/freebie-tv-usa">FREEBE TV USA</option>
+            <option value="http://127.0.0.1:3000/stream/dubai-one-eng">DUBAI ONE (ENG)</option>
+            <option value="http://127.0.0.1:3000/stream/mbc-bollywood">MBC BOLLYWOOD</option>
+            <option value="http://127.0.0.1:3000/stream/parayavaran-tv">PARAYAVARAN TV</option>
+            <option value="http://127.0.0.1:3000/stream/kids-tv">KIDS TV</option>
+            <option value="http://127.0.0.1:3000/stream/aljazeera-news">ALJAZEERA NEWS</option>
+            <option value="http://127.0.0.1:3000/stream/cna-international">CNA INTERNATIONAL</option>
+        </select>
+        <button id="loadButton">Load Selected Channel</button>
+        <p>Ensure your Termux Node.js proxy server is running on port 3000.</p>
+        <div id="log"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script>
+        var video = document.getElementById('video');
+        var channelSelect = document.getElementById('channelSelect');
+        var loadButton = document.getElementById('loadButton');
+        var logElement = document.getElementById('log');
+        var hls;
+
+        function appendLog(message) {
+            const p = document.createElement('p');
+            p.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logElement.appendChild(p);
+            logElement.scrollTop = logElement.scrollHeight; // Scroll to bottom
+        }
+
+        loadButton.addEventListener('click', function() {
+            var selectedUrl = channelSelect.value;
+
+            if (!selectedUrl) {
+                appendLog("Please select a channel first.");
+                return;
+            }
+
+            if(hls) {
+                hls.destroy();
+                if(video.src) {
+                    video.removeAttribute('src'); // Clear current source
+                    video.load(); // Reload video element
+                }
+            }
+
+            if (Hls.isSupported()) {
+                hls = new Hls();
+                hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+                    appendLog("Video element attached!");
+                });
+                hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+                    appendLog("Manifest parsed! " + data.levels.length + " quality levels found.");
+                    video.play(); // Start playing after manifest is parsed
+                });
+                hls.on(Hls.Events.ERROR, function (event, data) {
+                    var errorType = data.type;
+                    var errorDetails = data.details;
+                    var errorFatal = data.fatal;
+
+                    appendLog(`HLS.js Error: Type=${errorType}, Details=${errorDetails}, Fatal=${errorFatal}`);
+                    if (data.fatal) {
+                        switch (data.type) {
+                            case Hls.ErrorTypes.NETWORK_ERROR:
+                                appendLog("Network error: trying to recover.");
+                                hls.startLoad();
+                                break;
+                            case Hls.ErrorTypes.MEDIA_ERROR:
+                                appendLog("Media error: trying to recover.");
+                                hls.recoverMediaError();
+                                break;
+                            default:
+                                // Cannot recover
+                                hls.destroy();
+                                break;
+                        }
+                    }
+                });
+
+                hls.loadSource(selectedUrl);
+                hls.attachMedia(video);
+                appendLog("Attempting to load: " + selectedUrl);
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                // For browsers that natively support HLS (e.g., iOS Safari)
+                video.src = selectedUrl;
+                video.addEventListener('loadedmetadata', function() {
+                    video.play();
+                });
+                appendLog("Browser natively supports HLS. Loading: " + selectedUrl);
+            } else {
+                appendLog("HLS is not supported in this browser.");
+            }
+        });
+
+        // Auto-load if a channel is pre-selected or after page load
+        if (channelSelect.value) {
+            loadButton.click();
+        }
+    </script>
+</body>
+</html>
